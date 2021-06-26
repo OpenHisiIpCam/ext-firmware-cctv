@@ -1,0 +1,5 @@
+*.o
+*.lst
+*.S
+gmon.out
+/streamer

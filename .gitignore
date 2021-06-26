@@ -1,0 +1,10 @@
+output/
+buildroot-*/
+buildroot-*.tar.gz
+
+tmp/
+
+local.br.conf
+
+*.tar.gz
+*.zip

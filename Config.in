@@ -1,0 +1,24 @@
+comment "This is test comment"
+
+source "$BR2_EXTERNAL_CCTV_PATH/package/streamer/Config.in"
+
+#config
+#
+#source "$BR2_EXTERNAL_CAMFW_PATH/package/camfw-host-genimage/Config.in.host"
+
+comment "Firmware image"
+
+comment "Update/OTA image"
+
+config BR2_CAMFW_OTA_UPDATE
+        bool "Build OTA update"
+        default n
+
+        help
+                TODO
+
+if BR2_CAMFW_OTA_UPDATE
+        comment "TODO"
+endif
+
+comment "Development tools"
