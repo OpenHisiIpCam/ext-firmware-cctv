@@ -1,0 +1,6 @@
+*.tar.gz
+*.tar.xz
+doxygen
+doxygen-*
+cmocka-*
+astyle

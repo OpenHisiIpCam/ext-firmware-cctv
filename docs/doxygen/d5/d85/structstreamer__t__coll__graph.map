@@ -1,0 +1,19 @@
+<map id="streamer_t" name="streamer_t">
+<area shape="rect" id="node1" title="Main app`s struct." alt="" coords="425,259,509,285"/>
+<area shape="rect" id="node2" href="$db/da8/structlog__ram__t.html" title=" " alt="" coords="225,5,303,32"/>
+<area shape="rect" id="node3" href="$d1/dd0/structdummy__t.html" title=" " alt="" coords="226,56,302,83"/>
+<area shape="rect" id="node4" href="$d0/d93/structexchange__t.html" title=" " alt="" coords="219,107,309,133"/>
+<area shape="rect" id="node5" href="$de/dc0/structexchange__item__t.html" title=" " alt="" coords="5,56,127,83"/>
+<area shape="rect" id="node6" href="$d0/da8/structhisilicon__t.html" title=" " alt="" coords="224,157,304,184"/>
+<area shape="rect" id="node7" href="$d2/dd3/structhisilicon__mpp3__t.html" title=" " alt="" coords="7,107,125,133"/>
+<area shape="rect" id="node8" href="$dd/d98/structhisilicon__mpp4__t.html" title=" " alt="" coords="7,157,125,184"/>
+<area shape="rect" id="node9" href="$d0/d8f/structhisilicon__mpp1__t.html" title=" " alt="" coords="7,208,125,235"/>
+<area shape="rect" id="node10" href="$df/d03/structhisilicon__mpp2__t.html" title=" " alt="" coords="7,259,125,285"/>
+<area shape="rect" id="node11" href="$db/dc8/structpipe__t.html" title=" " alt="" coords="235,208,293,235"/>
+<area shape="rect" id="node12" href="$d0/d44/structlws__t.html" title=" " alt="" coords="237,259,291,285"/>
+<area shape="rect" id="node13" href="$d2/de0/structxm530__t.html" title=" " alt="" coords="228,309,300,336"/>
+<area shape="rect" id="node14" href="$dc/d11/structwebrtc__t.html" title=" " alt="" coords="228,360,300,387"/>
+<area shape="rect" id="node15" href="$d4/d7f/structrtp__t.html" title=" " alt="" coords="240,411,288,437"/>
+<area shape="rect" id="node16" href="$da/d74/structjpeg__t.html" title=" " alt="" coords="235,461,293,488"/>
+<area shape="rect" id="node17" href="$db/d98/structapp__params__t.html" title="Startup params parsed from cmd." alt="" coords="212,512,316,539"/>
+</map>

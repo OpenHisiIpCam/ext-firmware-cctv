@@ -1,0 +1,51 @@
+SRC_DIR=src
+
+SOURCES  = $(wildcard $(SRC_DIR)/*.c) 
+SOURCES += $(wildcard $(SRC_DIR)/*.h) 
+SOURCES += $(wildcard $(SRC_DIR)/*/*.c) 
+SOURCES += $(wildcard $(SRC_DIR)/*/*.h)
+SOURCES += $(wildcard $(SRC_DIR)/*/*/*.c)
+SOURCES += $(wildcard $(SRC_DIR)/*/*/*.h)
+SOURCES += $(wildcard $(SRC_DIR)/*/*/*/*.c)
+SOURCES += $(wildcard $(SRC_DIR)/*/*/*/*.h)
+
+#SOURCES += $(wildcard vendor/xm530/include/*.h)
+#SOURCES += $(wildcard vendor/xm530/include/*/*.h)
+
+#SOURCES = $(call rwildcard,src,*.c *.h)
+
+CLANG_FORMAT=clang-format-10
+#CLANG_FORMAT=/home/nikita/ohic/REPO/cctv/tools/astyle/1/astyle
+
+style:
+	@for src in $(SOURCES) ; do \
+		echo "Formatting $$src..." ; \
+		$(CLANG_FORMAT) -i "$$src" ; \
+	done
+	@echo "Done"
+
+check-style:
+	@for src in $(SOURCES) ; do \
+		var=`clang-format "$(SRC_DIR)/$$src" | diff "$(SRC_DIR)/$$src" - | wc -l` ; \
+		if [ $$var -ne 0 ] ; then \
+			echo "$$src does not respect the coding style (diff: $$var lines)" ; \
+			exit 1 ; \
+		fi ; \
+	done
+	@echo "Style check passed"
+  
+tidy:
+	@for src in $(SOURCES) ; do \
+		echo "Running tidy on $$src..." ; \
+		clang-tidy -checks="-*,modernize-use-auto,modernize-use-nullptr,\
+			readability-else-after-return,readability-simplify-boolean-expr,\
+			readability-redundant-member-init,modernize-use-default-member-init,\
+			modernize-use-equals-default,modernize-use-equals-delete,\
+			modernize-use-using,modernize-loop-convert,\
+			cppcoreguidelines-no-malloc,misc-redundant-expression" \
+			-header-filter=".*" \
+			"$(SRC_DIR)/$$src" ; \
+	done
+	@echo "Done"
+  
+.PHONY: style check-style tidy

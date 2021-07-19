@@ -1,0 +1,131 @@
+menuconfig BR2_PACKAGE_STREAMER
+	bool "Streamer"
+	default n
+        help
+		TODO
+
+if BR2_PACKAGE_STREAMER
+
+	choice BR2_PACKAGE_STREAMER_PLATFORM
+		prompt "Platform"
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_INFINITY6B0
+                        bool "SigmaStar infinity6b0"
+			help
+				TODO
+
+		config BR2_PACKAGE_CAMERA_PLATFORM_INFINITY6E
+                        bool "SigmaStar infinity6e"
+                        help
+                                TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516AV100
+                        bool "HiSilicon hi3516av100"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516AV200
+                        bool "HiSilicon hi3516av200"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516CV100
+                        bool "HiSilicon hi3516cv100"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516CV200
+                        bool "HiSilicon hi3516cv200"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516CV300
+                        bool "HiSilicon hi3516cv300"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516CV500
+                        bool "HiSilicon hi3516cv500"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_HI3516EV200
+                        bool "HiSilicon hi3516ev200"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_NT9852X
+                        bool "Novatek nt9852x"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_NT9856X
+                        bool "Novatek nt9856x"
+			help
+				TODO
+
+                config BR2_PACKAGE_CAMERA_PLATFORM_XM530
+                        bool "Xiongmai xm530"
+			help
+				TODO
+
+	endchoice
+
+	config BR2_PACKAGE_STREAMER_CONFIG_PATH
+		string "Default config path"
+		default "/etc/streamer.config"
+		help
+			TODO
+	
+	config BR2_PACKAGE_STREAMER_EMBED_KO
+		bool "Embed kernel modules"
+		default n
+		help
+			TODO
+
+	menuconfig BR2_PACKAGE_STREAMER_HTTP_SERVER
+                bool "Http server"
+                default n
+                help
+                        TODO
+
+	if BR2_PACKAGE_STREAMER_HTTP_SERVER
+
+		config BR2_PACKAGE_STREAMER_HTTP_FILES_PATH
+                	string "Default path to www files"
+                	default "/var/www"
+                	help
+                        	TODO
+#	
+#		config BR2_PACKAGE_STREAMER_
+#                	bool
+#                	default n
+#                	help
+#                        	TODO
+	endif
+
+        config BR2_PACKAGE_STREAMER_SCRIPT
+                bool "Scripts"
+                default n
+                help
+                        TODO
+
+	config BR2_PACKAGE_STREAMER_STREAMER_WEBRTC
+                bool "Streamer WebRTC"
+                default n
+                help
+                        TODO
+
+	config BR2_PACKAGE_STREAMER_STREAMER_RTP
+                bool "Streamer RTP"
+                default n
+                help
+                        TODO
+
+	config BR2_PACKAGE_STREAMER_STREAMER_JPEG
+                bool "Streamer jpeg"
+                default n
+                help
+                        TODO
+
+endif

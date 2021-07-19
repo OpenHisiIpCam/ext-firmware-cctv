@@ -1,0 +1,8 @@
+<map id="platform/hisilicon/hisilicon.h" name="platform/hisilicon/hisilicon.h">
+<area shape="rect" id="node1" title=" " alt="" coords="227,5,347,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,87,121"/>
+<area shape="rect" id="node3" href="$d9/dac/mpp1_8h.html" title=" " alt="" coords="111,95,213,121"/>
+<area shape="rect" id="node4" href="$d3/d72/mpp2_8h.html" title=" " alt="" coords="237,95,338,121"/>
+<area shape="rect" id="node5" href="$d9/d6f/mpp3_8h.html" title=" " alt="" coords="362,95,463,121"/>
+<area shape="rect" id="node6" href="$d9/d28/mpp4_8h.html" title=" " alt="" coords="487,95,589,121"/>
+</map>
