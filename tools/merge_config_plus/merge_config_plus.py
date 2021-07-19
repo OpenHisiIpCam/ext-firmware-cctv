@@ -57,6 +57,7 @@ def replace_vars(line):
     return line.replace("$(ROOT)", root_dir)
 
 
+
 def process_file(file, path, level=0):
     global header
 
@@ -222,6 +223,7 @@ def process_file(file, path, level=0):
 
         elif re_include.fullmatch(line.strip()):
             print("INCLUDE ")
+            
             include = re_include.fullmatch(line.strip()).group(1)
 
             if include[0] != "/":
