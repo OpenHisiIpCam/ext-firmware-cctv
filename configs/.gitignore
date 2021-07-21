@@ -1,2 +1,3 @@
-*_defconfig
-!*_local_defconfig
+!*_defconfig
+*_local_defconfig
+*_custom_defconfig

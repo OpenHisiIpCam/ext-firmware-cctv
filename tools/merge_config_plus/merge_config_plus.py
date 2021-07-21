@@ -23,11 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 __license__ = "MIT"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 import argparse
 import os
+import sys
 import re
+
+# root_dir = os.getcwd()
 
 files = []
 configs = {}
@@ -43,19 +46,22 @@ re_value_hex = re.compile("^0x[a-fA-F0-9]+$")
 re_value_bool = re.compile("^y$")
 re_value_str = re.compile('^"(.*)"$')
 re_config_unsetup = re.compile("^#\s(" + CONF_NAME + "\w+) is not set\s*$")
-re_config_concat_left = re.compile("^\s*(" + CONF_NAME + '\w+)\+="(.+)"\s*$')
-re_config_concat_right = re.compile("^\s*(" + CONF_NAME + '\w+)=\+"(.+)"\s*$')
+re_config_concat_right = re.compile("^\s*(" + CONF_NAME + '\w+)\s*\+=\s*"(.+)"\s*$')
+re_config_concat_left = re.compile("^\s*(" + CONF_NAME + '\w+)\s*=\+\s*"(.+)"\s*$')
+re_config_remove_substr = re.compile("^\s*(" + CONF_NAME + '\w+)\s*-=\s*"(.+)"\s*$')
 re_include = re.compile('^\s*include\s*"(.*)"\s*$')
 re_comment = re.compile("^#.*$")
 
 
 def replace_vars(line):
-    return line.replace("$(ROOT)", "/home/nikita/ohic/REPO/cctv")
+    return line.replace("$(ROOT)", root_dir)
+
 
 def process_file(file, path, level=0):
     global header
 
     curpath = os.path.dirname(os.path.abspath(file.name))
+    print("curpath", curpath)
 
     if os.path.abspath(file.name) in files:
         print("Dup file!")
@@ -67,7 +73,7 @@ def process_file(file, path, level=0):
             + "  " * level
             + " * '"
             + (os.path.relpath(file.name, start=args.root))
-            + "\n"
+            + "'\n"
         )
         files.append(os.path.abspath(file.name))
 
@@ -85,11 +91,13 @@ def process_file(file, path, level=0):
             ):
                 configs[re_config_setup.fullmatch(line.strip()).group(1)] = []
 
-            #print("====", re_config_setup.fullmatch(line.strip()).group(2))
+            # print("====", re_config_setup.fullmatch(line.strip()).group(2))
             if re_value_str.fullmatch(re_config_setup.fullmatch(line.strip()).group(2)):
                 configs[re_config_setup.fullmatch(line.strip()).group(1)].append(
                     {
-                        "value": re_value_str.fullmatch(re_config_setup.fullmatch(line.strip()).group(2)).group(1),
+                        "value": re_value_str.fullmatch(
+                            re_config_setup.fullmatch(line.strip()).group(2)
+                        ).group(1),
                         "file": file.name,
                         "line": count,
                     }
@@ -151,6 +159,32 @@ def process_file(file, path, level=0):
                 configs[re_config_concat_left.fullmatch(line.strip()).group(1)].append(
                     {"value": newv, "file": file.name, "line": count}
                 )
+        elif re_config_remove_substr.fullmatch(line.strip()):
+            print("REMOVE SUBSTR")
+            if (
+                configs.get(
+                    re_config_remove_substr.fullmatch(line.strip()).group(1), None
+                )
+                != None
+            ):
+                if not isinstance(
+                    configs[re_config_remove_substr.fullmatch(line.strip()).group(1)][
+                        -1
+                    ]["value"],
+                    str,
+                ):
+                    print("ERROR!")
+                    exit(1)
+
+                newv = configs[
+                    re_config_remove_substr.fullmatch(line.strip()).group(1)
+                ][-1]["value"].replace(
+                    re_config_remove_substr.fullmatch(line.strip()).group(2), ""
+                )
+
+                configs[
+                    re_config_remove_substr.fullmatch(line.strip()).group(1)
+                ].append({"value": newv, "file": file.name, "line": count})
 
         elif re_config_concat_right.fullmatch(line.strip()):
             print("CONCAT RIGHT")
@@ -188,12 +222,21 @@ def process_file(file, path, level=0):
 
         elif re_include.fullmatch(line.strip()):
             print("INCLUDE ")
-            
+            include = re_include.fullmatch(line.strip()).group(1)
+
+            if include[0] != "/":
+                include = curpath + "/" + include
+
+            print("include file", include)
+
             process_file(
-                open(re_include.fullmatch(line.strip()).group(1), "r"), curpath, level + 1
+                open(include, "r"),
+                curpath,
+                level + 1,
             )
         elif re_comment.fullmatch(line.strip()):
             print("COMMENT")
+            # print ("-1:", configs[-1])
         elif line.strip() == "":
             print("EMPTY")
         else:
@@ -202,79 +245,115 @@ def process_file(file, path, level=0):
 
 
 # def process_config_item(item, [setup, unsetup, change])
-def print_configs(configs):
+def print_configs(configs, out=sys.stdout):
+    print("OUT", out)
     for key in configs:
-        # print(key, " -> ", configs[key])
-        for i in range(len(configs[key]) - 1):
-            if configs[key][i]["value"] == None:
-                print(
-                    "# "
-                    + key
-                    + " is not set '"
-                    + configs[key][i]["file"]
-                    + "':"
-                    + str(configs[key][i]["line"])
-                )
-            elif configs[key][i]["value"] == True:
-                print(
-                    "# "
-                    + key
-                    + "=y '"
-                    + configs[key][i]["file"]
-                    + "':"
-                    + str(configs[key][i]["line"])
-                )
-            elif isinstance(configs[key][i]["value"], str):
-                print(
-                    "# "
-                    + key
-                    + "='"
-                    + configs[key][i]["value"]
-                    + "' '"
-                    + configs[key][i]["file"]
-                    + "':"
-                    + str(configs[key][i]["line"])
-                )
-            elif isinstance(configs[key][i]["value"], int):
-                print(
-                    "# "
-                    + key
-                    + "="
-                    + str(configs[key][i]["value"])
-                    + " '"
-                    + configs[key][i]["file"]
-                    + "':"
-                    + str(configs[key][i]["line"])
-                )
-            else:
-                print("ERROR")
-                exit(1)
+        if not args.disable_history:
+            for i in range(len(configs[key]) - 1):
+                if configs[key][i]["value"] == None:
+                    print(
+                        "# Previously "
+                        + key
+                        + " is not set in '"
+                        + (os.path.relpath(configs[key][i]["file"], start=args.root))
+                        + "':"
+                        + str(configs[key][i]["line"]),
+                        file=out,
+                    )
+                elif configs[key][i]["value"] == True:
+                    print(
+                        "# Previously "
+                        + key
+                        + "=y in '"
+                        + (os.path.relpath(configs[key][i]["file"], start=args.root))
+                        + "':"
+                        + str(configs[key][i]["line"]),
+                        file=out,
+                    )
+                elif isinstance(configs[key][i]["value"], str):
+                    print(
+                        "# Previously "
+                        + key
+                        + "='"
+                        + configs[key][i]["value"]
+                        + "' in '"
+                        + (os.path.relpath(configs[key][i]["file"], start=args.root))
+                        + "':"
+                        + str(configs[key][i]["line"]),
+                        file=out,
+                    )
+                elif isinstance(configs[key][i]["value"], int):
+                    print(
+                        "# Previously "
+                        + key
+                        + "="
+                        + str(configs[key][i]["value"])
+                        + " in '"
+                        + (os.path.relpath(configs[key][i]["file"], start=args.root))
+                        + "':"
+                        + str(configs[key][i]["line"]),
+                        file=out,
+                    )
+                else:
+                    print("ERROR", file=out)
+                    exit(1)
+
         # final value
         if configs[key][-1]["value"] == None:
-            print("# " + key + " is not set")
+            print("# " + key + " is not set", file=out)
         elif configs[key][-1]["value"] == True:
-            print(key + "=y")
+            print(key + "=y", file=out)
         elif isinstance(configs[key][-1]["value"], str):
-            print(key + '="' + configs[key][-1]["value"] + '"')
+            outline = configs[key][-1]["value"]
+            if args.strip_strings:
+                outline = outline.strip()
+                print("outline ", outline)
+            if outline != "":
+                print(key + '="' + outline + '"', file=out)
+            else:
+                print("# " + key + " is empty string, suppressed", file=out)
         elif isinstance(configs[key][-1]["value"], int):
-            print(key + "=" + str(configs[key][-1]["value"]))
+            print(key + "=" + str(configs[key][-1]["value"], file=out))
         else:
-            print("ERROR")
+            print("ERROR", file=out)
             exit(1)
 
 
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser = argparse.ArgumentParser(
+    description="Kconfig defconfig preprocessor.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
 parser.add_argument("-v", "--verbose", action="store_true", help="Print debug output")
+parser.add_argument(
+    "--version",
+    action="version",
+    version="%(prog)s {version}".format(version=__version__),
+)
 parser.add_argument(
     "-r", "--root", type=str, default=os.path.abspath(os.curdir), help="Root directory"
 )
-# parser.add_argument("-d", "--defailed", action="store_true", help="Detailed comments for output config")
-# parser.add_argument("-e", "--extra", action="store_true", help="Extra detailed comments for output config")
+parser.add_argument(
+    "-o", "--output", type=argparse.FileType("w"), default="-", help="Output to file"
+)
+parser.add_argument(
+    "--strip-strings", action="store_true", help="Strip final string values"
+)
+parser.add_argument(
+    "--disable-history",
+    action="store_true",
+    help="Remove var values history from output",
+)
 parser.add_argument(
     "files", metavar="F", type=argparse.FileType("r"), nargs="+", help="Files list"
 )
 
 args = parser.parse_args()
+
+root_dir = args.root
+
+# print(os.getcwd())
+
+# if
 
 print(args)
 
@@ -287,5 +366,5 @@ print(configs)
 
 print("----------------------------------")
 
-print(header)
-print_configs(configs)
+print(header, file=args.output)
+print_configs(configs, args.output)

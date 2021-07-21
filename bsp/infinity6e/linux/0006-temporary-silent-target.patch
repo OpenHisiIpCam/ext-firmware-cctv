@@ -1,0 +1,13 @@
+diff -uraN linux-4.9.84/Makefile linux-4.9.84-b/Makefile
+--- linux-4.9.84/Makefile	2021-08-03 23:43:41.842189318 +0300
++++ linux-4.9.84-b/Makefile	2021-08-03 23:47:03.667674599 +0300
+@@ -96,6 +96,9 @@
+ endif
+ endif
+ 
++s:
++	echo -n ""
++
+ export quiet Q KBUILD_VERBOSE
+ 
+ # kbuild supports saving output files in a separate directory.

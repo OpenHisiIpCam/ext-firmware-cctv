@@ -1,0 +1,48 @@
+diff -uraN uboot-2010.06/include/configs/hi3516av200.h uboot-2010.06-b/include/configs/hi3516av200.h
+--- uboot-2010.06/include/configs/hi3516av200.h	2021-08-01 18:20:14.104965510 +0300
++++ uboot-2010.06-b/include/configs/hi3516av200.h	2021-08-01 18:23:42.077289091 +0300
+@@ -335,7 +335,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ 
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 
+diff -uraN uboot-2010.06/include/configs/hi3516av200_nand.h uboot-2010.06-b/include/configs/hi3516av200_nand.h
+--- uboot-2010.06/include/configs/hi3516av200_nand.h	2021-08-01 18:20:14.104965510 +0300
++++ uboot-2010.06-b/include/configs/hi3516av200_nand.h	2021-08-01 18:23:52.473118038 +0300
+@@ -325,7 +325,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ 
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 
+diff -uraN uboot-2010.06/include/configs/hi3519v101.h uboot-2010.06-b/include/configs/hi3519v101.h
+--- uboot-2010.06/include/configs/hi3519v101.h	2021-08-01 18:20:14.108965435 +0300
++++ uboot-2010.06-b/include/configs/hi3519v101.h	2021-08-01 18:24:06.152894532 +0300
+@@ -336,7 +336,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ 
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 
+diff -uraN uboot-2010.06/include/configs/hi3519v101_nand.h uboot-2010.06-b/include/configs/hi3519v101_nand.h
+--- uboot-2010.06/include/configs/hi3519v101_nand.h	2021-08-01 18:20:14.108965435 +0300
++++ uboot-2010.06-b/include/configs/hi3519v101_nand.h	2021-08-01 18:24:12.292794791 +0300
+@@ -326,7 +326,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ 
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 

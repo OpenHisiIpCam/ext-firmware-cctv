@@ -1,0 +1,12 @@
+menuconfig BR2_PACKAGE_WWW
+        bool "Web interface for streamer"
+
+if BR2_PACKAGE_WWW
+	config BR2_PACKAGE_WWW_PATH
+		string "Target rootfs install path"
+		default "/var/www"
+
+	config BR2_PACKAGE_WWW_COMPRESS
+		bool "gzip files"
+		default n
+endif
