@@ -1,67 +1,62 @@
 # TODO description
 
-BUILDROOT_VERSION=2021.02.3
-#BUILDROOT_VERSION=2021.05
-
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/be-ext-bsp-infinity6b0)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516av100)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516av200)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516cv100)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516cv200)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516cv300)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516cv500)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-hi3516ev200)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-nt9852x)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-nt9856x)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath bsp/br-ext-bsp-xm530)
-#BR_EXTERNAL := $(BR_EXTERNAL):$(abspath br-ext-camfw)
-
 BR_EXTERNAL = $(abspath .)
 
 include Makefile.docs.include
+include Makefile.docker.include
 
 usage:
 	@echo "Usage:"
 	@echo "TODO"
 
-x86: output
-	echo "TODO"
+tools/buildroot:
+	make -C tools buildroot
 
-firmware-%: buildroot-$(BUILDROOT_VERSION) output
-	echo "TODO"
-	#support/kconfig/merge_config.sh
+.PHONY: list-defconfigs
+list-defconfigs: tools/buildroot
+	make \
+		-C $(abspath tools/buildroot) \
+	        BR2_EXTERNAL=$(BR_EXTERNAL) \
+	        list-defconfigs
 
-output:
-	mkdir -p output
+.PHONY: %_defconfig
+%_defconfig: tools/buildroot
+	@test -f ./configs/$@ || (echo "Config $@ does not exist"; exit 1)
+	make \
+		-C $(abspath tools/buildroot) \
+        	BR2_EXTERNAL=$(abspath $(BR_EXTERNAL)) \
+        	O=$(abspath output/$(subst _defconfig,,$@)) \
+        	$@
 
-buildroot-$(BUILDROOT_VERSION).tar.gz:
-	wget https://buildroot.org/downloads/buildroot-$(BUILDROOT_VERSION).tar.gz
+TOOLCHAINS = $(patsubst configs/%,%,$(wildcard configs/toolchain_*_defconfig))
+toolchains: $(TOOLCHAINS)
 
-buildroot-$(BUILDROOT_VERSION): buildroot-$(BUILDROOT_VERSION).tar.gz
-	tar -xvf buildroot-$(BUILDROOT_VERSION).tar.gz
+GENERICS = $(patsubst configs/%,%,$(wildcard configs/generic_*_defconfig))
+generics: $(GENERICS)
 
-list-defconfigs: buildroot-$(BUILDROOT_VERSION)
-	make -C $(abspath buildroot-$(BUILDROOT_VERSION)) \
-        BR2_EXTERNAL=$(BR_EXTERNAL) \
-        list-defconfigs
-
-configure: buildroot-$(BUILDROOT_VERSION)
-	make -C $(abspath buildroot-$(BUILDROOT_VERSION)) \
-        BR2_EXTERNAL=$(BR_EXTERNAL) \
-        O=$(abspath output/$(CONFIG)) menuconfig #\
-        #$(CONFIG)_defconfig
+.PHONY: toolchain_%_defconfig
+toolchain_%_defconfig: tools/buildroot
+	@test -f ./configs/$@ || (echo "Config $@ does not exist"; exit 1)
+	make \
+		-C $(abspath tools/buildroot) \
+		BR2_EXTERNAL=$(abspath $(BR_EXTERNAL)) \
+        	O=$(abspath output/$(subst _defconfig,,$@)) \
+        	$@
+	make \
+		-C $(abspath output/$(subst _defconfig,,$@)) \
+		sdk
+	cp -f $(abspath output/$(subst _defconfig,,$@))/images/*.tar.gz toolchain
+	rm -rf $(abspath output/$(subst _defconfig,,$@))
 
 # Run BR utils/check-package on all custom packages
-check-packages:
-	./buildroot-2021.05/utils/check-package -b ./br-ext-camfw/package/camera/*
+check-packages: tools/buildroot
+	tools/buildroot/utils/check-package -b $(BR_EXTERNAL)/package/camera/*
 	#TODO
 
-mrproper:
-	make -C software clean
-	rm -f buildroot-$(BUILDROOT_VERSION).tar.gz
-	rm -rf buildroot-$(BUILDROOT_VERSION)
-	rm -rf output
+deb:
+	echo "TODO add deb apt-get dependencies"
 
-.PHONY: docs/doxygen
-.PHONY: list-defconfigs
 .PHONY: mrproper
+mrproper:
+	make -C tools clean
+	rm -rf output

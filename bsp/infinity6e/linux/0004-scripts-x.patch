@@ -1,0 +1,15 @@
+diff --git linux-4.9.84/list_config.sh linux-4.9.84-b/list_config.sh
+old mode 100644
+new mode 100755
+diff --git linux-4.9.84/ms_pack_modules.sh linux-4.9.84-b/ms_pack_modules.sh
+old mode 100644
+new mode 100755
+diff --git linux-4.9.84/release_kernel_to_alkaid.sh linux-4.9.84-b/release_kernel_to_alkaid.sh
+old mode 100644
+new mode 100755
+diff --git linux-4.9.84/scripts/mkimage linux-4.9.84-b/scripts/mkimage
+old mode 100644
+new mode 100755
+diff --git linux-4.9.84/scripts/mz linux-4.9.84-b/scripts/mz
+old mode 100644
+new mode 100755

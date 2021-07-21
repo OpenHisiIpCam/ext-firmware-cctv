@@ -3,3 +3,4 @@
 *.S
 gmon.out
 /streamer
+build

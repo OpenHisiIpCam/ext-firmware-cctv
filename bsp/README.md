@@ -22,5 +22,18 @@
 |rv11xx     |RockChip |    |
 |xm530      |XiongMai |    |
 
+## Notes
 
-# References
+### Typical patches for old kernel (< 4.9)
+
+**TODO**
+
+* BR`s patches
+* gccX
+* asm`s register const -> register
+
+### Uboot
+
+* https://github.com/u-boot/u-boot/commit/de39dc71625d1a66cc611d1a85bf53545cba60a3#diff-1e9338600fcf62754807d32f9e27ce7b2c2794d5c470ec3780c644a9793de320
+
+## References

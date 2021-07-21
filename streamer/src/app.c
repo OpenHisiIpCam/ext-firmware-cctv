@@ -327,6 +327,9 @@ main(int argc, char* argv[])
     log_trace("Log to RAM inited.\n");
   }
 
+  // @todo set libuv thread pool size before it`s init
+  //putenv("UV_THREADPOOL_SIZE=5");
+
   r = uv_loop_init(&streamer.loop_uv); /// @todo check return
   if (0 != r) {
     log_fatal("UV loop init failed!\n");

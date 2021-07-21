@@ -1,0 +1,36 @@
+diff -uraN uboot-2010.06-a/include/configs/hi3516cv200.h uboot-2010.06-b/include/configs/hi3516cv200.h
+--- uboot-2010.06-a/include/configs/hi3516cv200.h	2021-07-23 23:58:35.210552473 +0300
++++ uboot-2010.06-b/include/configs/hi3516cv200.h	2021-07-23 23:58:53.762384724 +0300
+@@ -335,7 +335,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 	/* enable MMU for fast decompress */
+ 	/* #define CONFIG_ARCH_MMU */
+diff -uraN uboot-2010.06-a/include/configs/hi3518ev200.h uboot-2010.06-b/include/configs/hi3518ev200.h
+--- uboot-2010.06-a/include/configs/hi3518ev200.h	2021-07-23 23:58:35.210552473 +0300
++++ uboot-2010.06-b/include/configs/hi3518ev200.h	2021-07-23 23:59:03.234298969 +0300
+@@ -335,7 +335,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 	/* enable MMU for fast decompress */
+ 	/* #define CONFIG_ARCH_MMU */
+diff -uraN uboot-2010.06-a/include/configs/hi3518ev201.h uboot-2010.06-b/include/configs/hi3518ev201.h
+--- uboot-2010.06-a/include/configs/hi3518ev201.h	2021-07-23 23:58:35.210552473 +0300
++++ uboot-2010.06-b/include/configs/hi3518ev201.h	2021-07-23 23:59:08.782248695 +0300
+@@ -335,7 +335,7 @@
+ /*-----------------------------------------------------------------------
+  * Snapshot boot support
+  * ----------------------------------------------------------------------*/
+-#define CONFIG_SNAPSHOT_BOOT 1
++//#define CONFIG_SNAPSHOT_BOOT 1
+ #ifdef CONFIG_SNAPSHOT_BOOT
+ 	/* enable MMU for fast decompress */
+ 	/* #define CONFIG_ARCH_MMU */

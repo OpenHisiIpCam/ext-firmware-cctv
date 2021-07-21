@@ -1,6 +1,7 @@
 *.tar.gz
 *.tar.xz
-doxygen
-doxygen-*
-cmocka-*
-astyle
+doxygen*
+cmocka*
+astyle*
+esh*
+buildroot*

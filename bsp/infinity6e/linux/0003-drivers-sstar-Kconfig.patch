@@ -1,0 +1,30 @@
+diff -uraN linux-4.9.84/drivers/sstar/Kconfig linux-4.9.84-b/drivers/sstar/Kconfig
+--- linux-4.9.84/drivers/sstar/Kconfig	2021-08-03 23:23:18.575524844 +0300
++++ linux-4.9.84-b/drivers/sstar/Kconfig	2021-08-03 23:35:02.816898513 +0300
+@@ -8,7 +8,8 @@
+     depends on MSTAR_DRIVERS
+     default n
+ if ( CAM_DRIVERS )
+-source "drivers/sstar/camdriver/Kconfig"
++# Disables as not exist
++#source "drivers/sstar/camdriver/Kconfig"
+ endif
+ 
+ menuconfig DLA_DRIVER
+@@ -16,12 +17,14 @@
+     depends on MSTAR_DRIVERS
+     default n
+ if ( DLA_DRIVER )
+-source "drivers/sstar/cambricon/Kconfig"
++# Disables as not exist
++#source "drivers/sstar/cambricon/Kconfig"
+ endif
+ 
+ if ( MSTAR_DRIVERS )
+ 
+-source "drivers/sstar/irqchip/Kconfig"
++# Disables as not exist
++#source "drivers/sstar/irqchip/Kconfig"
+ source "drivers/sstar/clocksource/Kconfig"
+ source "drivers/sstar/msys/Kconfig"
+ source "drivers/sstar/serial/Kconfig"

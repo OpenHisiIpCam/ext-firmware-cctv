@@ -1,6 +1,10 @@
 menuconfig BR2_PACKAGE_STREAMER
 	bool "Streamer"
+	
+	select BR2_PACKAGE_LIBUV_CUSTOM
+
 	default n
+
         help
 		TODO
 
@@ -128,4 +132,11 @@ if BR2_PACKAGE_STREAMER
                 help
                         TODO
 
+	menuconfig BR2_PACKAGE_STREAMER_DEBUG
+		bool "Debug"
+
+	if BR2_PACKAGE_STREAMER_DEBUG
+		comment "TODO"
+	endif
 endif
+

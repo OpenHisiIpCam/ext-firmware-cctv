@@ -24,6 +24,16 @@
 **At the moment this repo maybe interesting only for developers, 
 as it can't produce any interesting result for end user.**
 
+### Clone repo
+```console
+$ git clone --recursive https://github.com/OpenHisiIpCam/cctv
+```
+
+### Toolchain
+```console
+$ cd toolchain; make all
+```
+
 Common operations avaliable via root Makefile.
 
 ### Docs

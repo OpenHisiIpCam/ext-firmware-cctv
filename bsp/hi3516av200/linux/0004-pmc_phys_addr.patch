@@ -1,0 +1,24 @@
+diff -uraN linux-3.18.20/arch/arm/mach-hisi/pmc_hi3516av200.c linux-3.18.20-b/arch/arm/mach-hisi/pmc_hi3516av200.c
+--- linux-3.18.20/arch/arm/mach-hisi/pmc_hi3516av200.c	2021-08-01 18:38:35.772902463 +0300
++++ linux-3.18.20-b/arch/arm/mach-hisi/pmc_hi3516av200.c	2021-08-01 18:42:41.349910304 +0300
+@@ -34,7 +34,7 @@
+ #define PERI_PMC85	(0x154)
+ 
+ static void __iomem *pmc_base;
+-static u32  pmc_phys_addr;
++static u32 __attribute__((used)) pmc_phys_addr;
+ 
+ #define PMC_ADDRESS(reg)	(pmc_base + reg)
+ /* set bitfield of reg from start bit to end - 1 bit */
+diff -uraN linux-3.18.20/arch/arm/mach-hisi/pmc_hi3519v101.c linux-3.18.20-b/arch/arm/mach-hisi/pmc_hi3519v101.c
+--- linux-3.18.20/arch/arm/mach-hisi/pmc_hi3519v101.c	2021-08-01 18:38:35.772902463 +0300
++++ linux-3.18.20-b/arch/arm/mach-hisi/pmc_hi3519v101.c	2021-08-01 18:42:54.397753406 +0300
+@@ -34,7 +34,7 @@
+ #define PERI_PMC85	(0x154)
+ 
+ static void __iomem *pmc_base;
+-static u32  pmc_phys_addr;
++static u32 __attribute__((used)) pmc_phys_addr;
+ 
+ #define PMC_ADDRESS(reg)	(pmc_base + reg)
+ /* set bitfield of reg from start bit to end - 1 bit */

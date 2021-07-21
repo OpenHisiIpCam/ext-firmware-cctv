@@ -1,0 +1,6 @@
+diff -uraN linux-4.9.84/.sstar_chip.txt linux-4.9.84-b/.sstar_chip.txt
+--- linux-4.9.84/.sstar_chip.txt	2021-08-03 23:23:18.679523007 +0300
++++ linux-4.9.84-b/.sstar_chip.txt	2021-08-03 23:33:49.473893125 +0300
+@@ -1 +1 @@
+-infinity6
++infinity6e

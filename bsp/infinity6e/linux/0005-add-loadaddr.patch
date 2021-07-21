@@ -1,0 +1,13 @@
+diff -uraN linux-4.9.84/arch/arm/boot/Makefile linux-4.9.84-b/arch/arm/boot/Makefile
+--- linux-4.9.84/arch/arm/boot/Makefile	2021-08-03 23:39:00.313770608 +0300
++++ linux-4.9.84-b/arch/arm/boot/Makefile	2021-08-03 23:42:35.263027167 +0300
+@@ -19,6 +19,9 @@
+ LD_ADDR = $(shell /bin/bash -c 'printf "0x%08x" $$[$(CONFIG_PHYS_OFFSET) + 0x8000]')
+ endif
+ 
++# Setup laod address for uImage 
++LOADADDR = ${LD_ADDR}
++
+ MKIMAGE_BIN = scripts/mkimage
+ MZ_BIN = scripts/mz
+ KERNEL_RELEASE_FILE = include/config/kernel.release

@@ -1,24 +1,33 @@
-comment "This is test comment"
+source "$BR2_EXTERNAL_CCTV_PATH/bsp/Config.in.settings"
+
+menu "Build settings"
+	config BR2_CCTV_BUILD_VERSION
+		string "Version"
+endmenu
 
 source "$BR2_EXTERNAL_CCTV_PATH/package/streamer/Config.in"
+source "$BR2_EXTERNAL_CCTV_PATH/package/www/Config.in"
 
-#config
-#
-#source "$BR2_EXTERNAL_CAMFW_PATH/package/camfw-host-genimage/Config.in.host"
+source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.settings"
+source "$BR2_EXTERNAL_CCTV_PATH/package/swupdate-custom/Config.in.settings"
 
-comment "Firmware image"
+menu "Dependency packages"
+        source "$BR2_EXTERNAL_CCTV_PATH/package/libdatachannel/Config.in"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/usrsctp/Config.in"
+endmenu
 
-comment "Update/OTA image"
+menu "Replacement packages"
+	comment "Newer version replacements for BR provided packages"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/swupdate-custom/Config.in"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/libuv-custom/Config.in"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/libwebsockets-custom/Config.in"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/libsrtp-custom/Config.in"
+endmenu
 
-config BR2_CAMFW_OTA_UPDATE
-        bool "Build OTA update"
-        default n
+menu "Host tools"
+	comment "Additional and newer version host tools"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/esh/Config.in.host"
+	source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.host"
+endmenu
 
-        help
-                TODO
 
-if BR2_CAMFW_OTA_UPDATE
-        comment "TODO"
-endif
-
-comment "Development tools"
