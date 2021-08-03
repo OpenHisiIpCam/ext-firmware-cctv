@@ -4,4 +4,4 @@ doxygen*
 cmocka*
 astyle*
 esh*
-buildroot*
+/buildroot*

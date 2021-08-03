@@ -1,7 +1,7 @@
 
 include $(sort $(wildcard $(BR2_EXTERNAL_CCTV_PATH)/package/*/*.mk))
 
-include $(BR2_EXTERNAL_CCTV_PATH)/bsp/bsp.mk
+include $(BR2_EXTERNAL_CCTV_PATH)/board/bsp.mk
 
 #SWUPDATE_POST_INSTALL_TARGET_HOOKS
 

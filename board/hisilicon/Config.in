@@ -1,0 +1,67 @@
+if BR2_CCTV_PLATFORM_HISILICON
+	config BR2_CCTV_PLATFORM_HISI_UBOOT2010_06
+	        bool
+		default y
+		depends on 	BR2_CCTV_PLATFORM_HI3516AV100 || \
+				BR2_CCTV_PLATFORM_HI3516AV200 || \
+				BR2_CCTV_PLATFORM_HI3516CV100 || \
+				BR2_CCTV_PLATFORM_HI3516CV200 || \
+				BR2_CCTV_PLATFORM_HI3516CV300 || \
+				BR2_CCTV_PLATFORM_HI3536DV100
+
+	config BR2_CCTV_PLATFORM_HISI_UBOOT2016_11
+        	bool
+		default y
+		depends on	BR2_CCTV_PLATFORM_HI3516CV500 || \
+                                BR2_CCTV_PLATFORM_HI3516EV200 || \
+                                BR2_CCTV_PLATFORM_HI3519AV100
+
+	menuconfig BR2_CCTV_PLATFORM_HISI_UBOOT2010_06_CUSTOM
+		bool "Customize Uboot 2010.06"
+		depends on BR2_TARGET_UBOOT
+		depends on BR2_CCTV_PLATFORM_HISI_UBOOT2010_06
+		select BR2_PACKAGE_HOST_ESH
+
+	if BR2_CCTV_PLATFORM_HISI_UBOOT2010_06_CUSTOM
+		comment "Option 1"
+		comment "Option 2"
+		comment "Option ..."
+		config BR2_TARGET_UBOOT_BOARDNAME
+			string "Uboot board name"
+			help
+				This is duplicate of same item from native BR`s menu.
+				Make sure that it is 'hi3516c'
+		
+	        config BR2_CCTV_UBOOT_REGBIN
+	                string "Patch uboot with regbin table file"
+	                default ""
+	                help
+	                        Will not be patched if empty
+				If patched saved as images/u-boot-regbin.bin
+	endif
+
+	menuconfig BR2_CCTV_PLATFORM_HISI_UBOOT2016_11_CUSTOM
+		bool "Customize Uboot 2016.11"
+                depends on BR2_TARGET_UBOOT
+		depends on BR2_CCTV_PLATFORM_HISI_UBOOT2016_11
+
+	if BR2_CCTV_PLATFORM_HISI_UBOOT2016_11_CUSTOM
+		config BR2_CCTV_UBOOT_SOURCE
+			string "Source config file"
+
+		config BR2_CCTV_UBOOT_SOURCE
+                        string "Output config file"
+
+		config BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE
+			string "uboot dup"
+			help 
+				TODO
+
+		config BR2_CCTV_UBOOT_REGBIN
+                        string "Patch uboot with regbin table file"
+                        default ""
+                        help
+                                Will not be patched if empty
+                                If patched saved as images/u-boot-regbin.bin
+	endif
+endif

@@ -1,0 +1,3 @@
+[submodule "tools/merge_config_plus"]
+	path = tools/merge_config_plus
+	url = https://github.com/OpenHisiIpCam/merge_config_plus

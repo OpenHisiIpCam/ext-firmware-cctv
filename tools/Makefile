@@ -13,6 +13,7 @@ buildroot-$(BUILDROOT_VERSION): buildroot-$(BUILDROOT_VERSION).tar.gz
 	tar -m -xvf $<
 
 buildroot: buildroot-$(BUILDROOT_VERSION)
+	cd $<; patch -p1 < ../patches/buildroot-$(BUILDROOT_VERSION)/0001-uboot-host-esh-dependency.patch
 	ln -s $< $@
 
 doxygen-$(DOXYGEN_VERSION).src.tar.gz:
