@@ -1,33 +1,122 @@
-source "$BR2_EXTERNAL_CCTV_PATH/bsp/Config.in.settings"
+config BR2_CCTV_BOARD_VENDOR
+	string "Vendor name"
+        default "vendor"
 
-menu "Build settings"
-	config BR2_CCTV_BUILD_VERSION
-		string "Version"
-endmenu
+config BR2_CCTV_BOARD_MODEL
+	string "Model name"
+        default "model"
 
-source "$BR2_EXTERNAL_CCTV_PATH/package/streamer/Config.in"
-source "$BR2_EXTERNAL_CCTV_PATH/package/www/Config.in"
+source "$BR2_EXTERNAL_CCTV_PATH/board/Config.in"
 
-source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.settings"
-source "$BR2_EXTERNAL_CCTV_PATH/package/swupdate-custom/Config.in.settings"
+menuconfig BR2_CCTV_KERNEL_CONFIG
+	bool "Generate kernel config"
+	default n
+	help
+		This option triggers kernel defconfig generation
+		via merge_config_plus.
 
-menu "Dependency packages"
-        source "$BR2_EXTERNAL_CCTV_PATH/package/libdatachannel/Config.in"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/usrsctp/Config.in"
-endmenu
+if BR2_CCTV_KERNEL_CONFIG
+	config BR2_CCTV_KERNEL_CONFIG_SOURCE
+		string "Source file"
+		default "$BR2_EXTERNAL_CCTV_PATH/board/vendor/model/linux.config"
+	
+	config BR2_CCTV_KERNEP_CONFIG_OUTPUT
+		string "Output file"
+		default "$BUILD_DIR/build/cctv.tmp/kernel_defconfig"
 
-menu "Replacement packages"
-	comment "Newer version replacements for BR provided packages"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/swupdate-custom/Config.in"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/libuv-custom/Config.in"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/libwebsockets-custom/Config.in"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/libsrtp-custom/Config.in"
-endmenu
+	config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
+		string "Kernel configuration file path"
+		help
+			This is duplicate of same var in native BR`s Kernel menu.
+			Make sure that it`s value is same as output file above.
+endif
+
+
+comment "***"
+
+#source "$BR2_EXTERNAL_CCTV_PATH/package/streamer/Config.in"
+#source "$BR2_EXTERNAL_CCTV_PATH/package/www/Config.in"
+
+#source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.settings"
+#source "$BR2_EXTERNAL_CCTV_PATH/package/swupdate-custom/Config.in.settings"
+
+#menu "Dependency packages"
+#        source "$BR2_EXTERNAL_CCTV_PATH/package/libdatachannel/Config.in"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/usrsctp/Config.in"
+#endmenu
+
+#menu "Replacement packages"
+#	comment "Newer version replacements for BR provided packages"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/swupdate-custom/Config.in"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/libuv-custom/Config.in"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/libwebsockets-custom/Config.in"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/libsrtp-custom/Config.in"
+#endmenu
 
 menu "Host tools"
 	comment "Additional and newer version host tools"
 	source "$BR2_EXTERNAL_CCTV_PATH/package/esh/Config.in.host"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.host"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.host"
 endmenu
 
+#comment "***"
 
+#menu "System settings"
+#        config BR2_CCTV_SYSTEM_VERSION
+#                string "Version"
+#
+#	config BR2_CCTV_SYSTEM_HOSTNAME
+#		string "Hostname"
+#		default "$(BR2_CCTV_BOARD_VENDOR)_$(BR2_CCTV_BOARD_MODEL)"
+#
+#	
+#endmenu
+#
+#menuconfig BR2_CCTV_FIRMWARE
+#	bool "Generate firmware"
+#
+#        select BR2_PACKAGE_HOST_ESH
+#        select BR2_PACKAGE_HOST_GENIMAGE_CUSTOM
+#
+#	help
+#		TODO
+#
+#if BR2_CCTV_FIRMWARE
+#	choice BR2_CCTV_FIRMWARE_ROM
+#        	prompt "ROM"
+#
+#	        config BR2_CCTV_FIRMWARE_ROM_SPINOR
+#	                bool "SPI NOR"
+#	endchoice
+#
+#	choice BR2_CCTV_FIRMWARE_LAYOUT
+#		prompt "Layout"
+#
+#		config BR2_CCTV_FIRMWARE_LAYOUT_1P
+#			bool "One system"
+#	endchoice
+#
+#	config BR2_CCTV_FIRMWARE_LOADER
+#		string "Loader"
+#
+#	config BR2_CCTV_FIRMWARE_KERNEL
+#                string "Kernel"
+#
+#	config BR2_CCTV_FIRMWARE_ROOTFS
+#		string "Root filesystem"
+#
+#	config BR2_CCTV_FIRMWARE_USER
+#                string "User filesystem"
+#endif
+
+#menuconfig BR2_CCTV_OTA
+#	bool "Generate OTA"
+#
+#	select BR2_CCTV_FIRMWARE
+#
+#	help
+#		TODO
+
+#if BR2_CCTV_OTA
+#	comment "TODO"
+#endif

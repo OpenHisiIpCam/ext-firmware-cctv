@@ -12,15 +12,19 @@ usage:
 tools/buildroot:
 	make -C tools buildroot
 
+.PHONY: configs
+configs:
+	make -C configs
+
 .PHONY: list-defconfigs
-list-defconfigs: tools/buildroot
+list-defconfigs: tools/buildroot configs
 	make \
 		-C $(abspath tools/buildroot) \
 	        BR2_EXTERNAL=$(BR_EXTERNAL) \
 	        list-defconfigs
 
 .PHONY: %_defconfig
-%_defconfig: tools/buildroot
+%_defconfig: tools/buildroot configs
 	@test -f ./configs/$@ || (echo "Config $@ does not exist"; exit 1)
 	make \
 		-C $(abspath tools/buildroot) \
@@ -28,14 +32,14 @@ list-defconfigs: tools/buildroot
         	O=$(abspath output/$(subst _defconfig,,$@)) \
         	$@
 
-TOOLCHAINS = $(patsubst configs/%,%,$(wildcard configs/toolchain_*_defconfig))
+TOOLCHAINS = $(patsubst configs/%,%,$(wildcard configs/*toolchain-*_defconfig))
 toolchains: $(TOOLCHAINS)
 
 GENERICS = $(patsubst configs/%,%,$(wildcard configs/generic_*_defconfig))
 generics: $(GENERICS)
 
 .PHONY: toolchain_%_defconfig
-toolchain_%_defconfig: tools/buildroot
+$(TOOLCHAINS): %: tools/buildroot configs
 	@test -f ./configs/$@ || (echo "Config $@ does not exist"; exit 1)
 	make \
 		-C $(abspath tools/buildroot) \

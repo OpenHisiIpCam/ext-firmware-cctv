@@ -1,4 +1,4 @@
-MERGE_TOOL = $(abspath ../tools/merge_config_plus/merge_config_plus.py)
+MERGE_TOOL = $(abspath ../tools/merge_config_plus/merge_config_plus.sh)
 
 BOARDS = 	$(patsubst %.br.config,%_defconfig, \
 	  		$(subst /,_, \
@@ -8,41 +8,16 @@ BOARDS = 	$(patsubst %.br.config,%_defconfig, \
 			) \
 		)
 
-TOOLCHAINS =	$(patsubst %.br.config,%_defconfig, \
-                        $(subst /,_, \
-                                        $(wildcard toolchain/*.br.config) \
-                        ) \
-                )
+.SECONDEXPANSION: %_defconfig
 
-GENERICS =	$(patsubst %.br.config,%_defconfig, \
-                        $(subst br/,generic_, \
-                                        $(wildcard br/*.br.config) \
-                        ) \
-                )
+all: $(TOOLCHAINS) $(BOARDS)
 
-.NOTPARALLEL: all
-all: clean $(TOOLCHAINS) $(GENERICS) $(BOARDS)
-
-%_defconfig:
-	$(MERGE_TOOL) \
-		-r $(abspath ..) \
-		--strip-strings \
+%_defconfig: $(MERGE_TOOL) $$(shell $(MERGE_TOOL) -b $(abspath .) --mode dependencies -f ../board/$$(subst _,/,%).br.config)
+	@$(MERGE_TOOL) \
+		-b $(abspath .) \
 		-o $@ \
-		../board/$(subst /defconfig,.br.config,$(subst _,/,$@))
-
-toolchain_%_defconfig:
-	$(MERGE_TOOL) \
-                -r $(abspath ..) \
-                --strip-strings \
-                -o $@ \
-                ./$(subst /defconfig,.br.config,$(subst _,/,$@))
-
-generic_%_defconfig:
-	$(MERGE_TOOL) \
-                -r $(abspath ..) \
-                --strip-strings \
-                -o $@ \
-                ./$(subst _defconfig,.br.config,$(subst generic_,br/,$@))
+		--strip-history \
+		-f ../board/$(subst /defconfig,.br.config,$(subst _,/,$@))
 
 .PHONY: clean
 clean:

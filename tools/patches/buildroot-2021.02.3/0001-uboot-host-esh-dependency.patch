@@ -1,0 +1,15 @@
+diff -uraN buildroot-2021.02.3/boot/uboot/uboot.mk buildroot-2021.02.3-b/boot/uboot/uboot.mk
+--- buildroot-2021.02.3/boot/uboot/uboot.mk	2021-08-04 22:01:13.603046647 +0300
++++ buildroot-2021.02.3-b/boot/uboot/uboot.mk	2021-08-05 23:09:07.934519237 +0300
+@@ -490,6 +490,11 @@
+ 
+ endif # BR2_TARGET_UBOOT && BR_BUILDING
+ 
++# CCTV patch
++ifeq ($(BR2_CCTV_PLATFORM_HISI_UBOOT2010_06_CUSTOM),y)
++UBOOT_DEPENDENCIES += host-esh
++endif
++
+ ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY),y)
+ UBOOT_DEPENDENCIES += \
+ 	$(BR2_BISON_HOST_DEPENDENCY) \
