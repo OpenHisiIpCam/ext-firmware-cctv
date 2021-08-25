@@ -1,0 +1,6 @@
+if BR2_CCTV_PLATFORM_XM
+
+	config BR2_CCTV_PLATFORM_XM_UBOOT2014_04
+	        bool
+
+endif

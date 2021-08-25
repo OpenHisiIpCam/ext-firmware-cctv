@@ -1,0 +1,52 @@
+config {}
+
+flash nor-16M-256 {
+    pebsize = 4096
+    numpebs = 4096
+    minimum-io-unit-size = 256
+}
+
+image user.16M.jffs2 {
+	flashtype = "nor-16M-256"
+        jffs2 {}
+}
+
+image 1p16M.img {
+    flash {}
+    flashtype = "nor-16M-256"
+
+    partition uboot {
+        image = "<%= ${BR2_CCTV_FIRMWARE_UBOOT} %>"
+        offset = 0
+        size = 512K
+    }
+
+/*
+    partition uboot-env {
+        image = "uboot-env.bin"
+        size = 64K
+    }
+*/
+
+    partition uimage {
+        image = "<%= ${BR2_CCTV_FIRMWARE_LINUX} %>"
+        size = 4096K
+    }
+
+    partition rootfsA {
+        image = "<%= ${BR2_CCTV_FIRMWARE_ROOTFS} %>"
+        size = 3584K
+    }
+
+/*
+    partition user {
+        image = "<%= ${BR2_CCTV_FIRMWARE_USER_PARTITION} %>"
+    }
+*/
+
+    partition user {
+        image = "user.16M.jffs2"
+    }
+
+    size = 16M
+}

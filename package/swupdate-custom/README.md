@@ -1,1 +1,0 @@
-# Over The Air updates

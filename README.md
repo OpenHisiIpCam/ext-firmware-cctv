@@ -11,52 +11,102 @@
 
 ## :mag: About
 
+Project allows you build custom, mostly open source, maintanable firmware for typical
+video surveillance hardware like ip cameras or network video registrators.
+
+**End user documentation, that you advised to read first, can be found on our website
+[https://www.openhisiipcam.org/firmware](https://www.openhisiipcam.org/firmware).
+Below information is related only for development and some minimal 
+relevant skills level expected.**
+
+### Current status
+
+Building on previous experience project is started with planning.
+Now it is early stage, where we think, try and plan how things will be
+orginized.
+
+* Architecture planning
+    * How to describe hardware?
+    * ...
+* Docker env needed
+* Configs
+    * Conventions should be determined
+    * Typical config flow for some SoC/Family
+* Firmware
+    * ...
+
 ## :closed_book: TOC
 
 * [Quick Start](#quick-start)
-* [Architecture overview](#architecture-overview)
-* [Repo structure](#repo-structure)
+* [Internals](#internals)
+    * [Repo structure](#repo-structure)
+    * [Dive into details](#dive-into-details)
 * [Contributing](#contributing)
 * [License](#license)
 
 ## :rocket: Quick Start
 
-**At the moment this repo maybe interesting only for developers, 
-as it can't produce any interesting result for end user.**
+Actually there is no quick start for beginners. But still.
 
-### Clone repo
+### Prerequisties
+
+It is possible to use this repo directly on your host machine or
+via the docker. Recommended usage way is Docker, as it already 
+contains all needed enviroiment and prebuilt toolchains 
+to build targets.
+
+### Building
+
+Clone repo:
 ```console
-$ git clone --recursive https://github.com/OpenHisiIpCam/cctv
+user@host:~$ git clone https://github.com/OpenHisiIpCam/cctv
+user@host:~$ cd cctv
 ```
 
-### Toolchain
+Check avalible configs:
 ```console
-$ cd toolchain; make all
+user@host:~/cctv$ make list-defconfigs
 ```
 
-Common operations avaliable via root Makefile.
-
-### Docs
-
-Actual `/docs` are hosted on https://openhisiipcam.org/
-
-```
-$ make output/docs
+Build something:
+```console
+user@host:~/cctv$ make something_defconfig
+user@host:~/cctv$ cd output/something
+user@host:~/cctv/something$ make
 ```
 
-**TODO**
+Artifacts can be found in `~/cctv/output/something/images` dir.
 
-## :hammer_and_wrench: Architecture overview
+## :hammer_and_wrench: Internals
 
-Main build system is Buildroot
+Technically this is Buildroot's external tree with BSPs for target SoCs,
+compatible hardware description collection, coordinated configs set,
+custom software packages and wrapper enviroiment.
 
-## :building_construction: Repo structure
+Supported SoCs list and known hardware modules can be found in [boards/README.md](boards/README.md).
+For hardware modules maybe better to check generated [catalog](https://www.openhisiipcam.org/firmware/boards).
 
-```
-TODO
-```
+### :building_construction: Repo structure
 
-## Contributing
+As main build system is Buildroot and common way to extend it is so called external tree,
+dirs and files organization trys to follow [manual recommendations](https://buildroot.org/downloads/manual/manual.html#customize-dir-structure)
+where it is possible.
+
+* boards - BSP, board description collection, config's sources. 
+* configs - build configurations for different hardware models, toolchains and dev enviroiment.
+* docs - end user documentation (hosted on [https://www.openhisiipcam.org/firmware](https://www.openhisiipcam.org/firmware)).
+* package - ???
+* scripts - collections of scripts that are invoked during different build stages.
+* toolchain - Storage for locally built sdks.
+* vendors - 3rd party tools
+
+### Dive into details
+
+
+Each directory contains it's own detailed README file.
+
+
+## :???: Contributing
 If you have suggestions for how the project could be improved, 
 or want to report a bug, open an issue! We'd love all and any contributions.
 

@@ -1,0 +1,31 @@
+menuconfig BR2_PACKAGE_HI_SDK
+        bool "HiSilicon komods and libs"
+        default n
+
+if BR2_PACKAGE_HI_SDK
+config BR2_PACKAGE_HI_SDK_FAMILY
+	string "family name"
+	default "hi3516cv100"
+
+config BR2_PACKAGE_HI_SDK_VERSION
+        string "version"
+        default "1.0.b.0"
+
+config BR2_PACKAGE_HI_SDK_TARGET_KOMODS
+        bool "target ko modules"
+        default n
+
+config BR2_PACKAGE_HI_SDK_TARGET_KOMODS_LIST
+        string "ko modules list"
+        default "all"
+        depends on BR2_PACKAGE_HI_SDK_TARGET_KOMODS
+
+config BR2_PACKAGE_HI_SDK_TARGET_LIBS
+        bool "target shared libs"
+        default n
+
+config BR2_PACKAGE_HI_SDK_TARGET_LIBS_LIST
+        string "shared libs list"
+        default "all"
+        depends on BR2_PACKAGE_HI_SDK_TARGET_LIBS
+endif

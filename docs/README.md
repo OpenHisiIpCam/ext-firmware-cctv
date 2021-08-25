@@ -1,5 +1,6 @@
-# Dcoumentation for CCTV project
+# End user documentation
 
-# Reference
+**TODO**
 
-* Docs are based on [Jekyll Doc Theme 6.0](https://idratherbewriting.com/documentation-theme-jekyll/), [sources on github](https://github.com/tomjoht/documentation-theme-jekyll).
+## References 
+Layer (Free Landing Page) Template from Uisual was used for temporary stub.
