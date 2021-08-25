@@ -1,0 +1,102 @@
+menuconfig BR2_CCTV_FIRMWARE
+        bool "Build firmware image"
+
+	select BR2_PACKAGE_HOST_ESH
+	select BR2_PACKAGE_HOST_GENIMAGE_CUSTOM
+
+        help
+                TODO
+
+if BR2_CCTV_FIRMWARE
+	choice
+		prompt "Layout"
+		
+		config BR2_CCTV_FIRMWARE_LAYOUT_1P_CUSTOM
+                        bool "One system, custom"
+
+		config BR2_CCTV_FIRMWARE_LAYOUT_2P_CUSTOM
+			bool "Two systems, custom"
+
+		config BR2_CCTV_FIRMWARE_LAYOUT_1P_16MB_V1
+                        bool "One system, 16MB"
+		
+		config BR2_CCTV_FIRMWARE_LAYOUT_2P_16MB_V1
+			bool "Two systems, 16MB"
+
+		config BR2_CCTV_FIRMWARE_LAYOUT_CUSTOM_CFG
+			bool "Custom config"
+	endchoice
+
+	if BR2_CCTV_FIRMWARE_LAYOUT_1P_CUSTOM
+                comment "TODO One system, custom"
+        endif
+
+        if BR2_CCTV_FIRMWARE_LAYOUT_2P_CUSTOM
+                comment "TODO Two systems, custom"
+        endif
+
+	if BR2_CCTV_FIRMWARE_LAYOUT_1P_8MB
+		comment "TODO One system, 8MB"
+	endif
+
+	if BR2_CCTV_FIRMWARE_LAYOUT_1P_16MB
+		comment "TODO One system, 16MB"
+	endif
+
+	if BR2_CCTV_FIRMWARE_LAYOUT_2P_16MB
+                comment "TODO Two systems, 16MB"
+        endif
+
+	if BR2_CCTV_FIRMWARE_LAYOUT_CUSTOM_CFG
+        	config BR2_CCTV_FIRMWARE_CUSTOM_CFG
+                	string "Genimage firmware build config"
+                	default ""
+                	help
+                        	TODO
+
+	endif
+
+	if !BR2_CCTV_FIRMWARE_LAYOUT_CUSTOM_CFG
+
+		config BR2_CCTV_FIRMWARE_LOADER
+	                string "Loader file"
+	                default "uboot.bin"
+			help
+				TODO
+				Usually just u-boot used, that acts as SPL and TPL.
+				Some platforms requires separate custom SPL.
+
+		#config BR2_CCTV_FIRMWARE_UBOOT
+	        #        string "U-Boot file"
+	        #        default "uboot.bin"
+	
+		config BR2_CCTV_FIRMWARE_LINUX
+	                string "Linux kernel file"
+	                default "uImage"
+	
+		#config BR2_CCTV_FIRMWARE_LINUX_DTB
+	        #        string "Linux kernel DTB file"
+	        #        default "some.dtb"
+
+		config BR2_CCTV_FIRMWARE_ROOTFS
+	                string "root filesystem image file"
+	                default "rootfs.squashfs"
+
+		choice
+			prompt "User partition"
+
+			config BR2_CCTV_FIRMWARE_USER_EMPTY_JFFS2
+				bool "Empty jffs2, that takes rest space"
+
+			config BR2_CCTV_FIRMWARE_USER_CUSTOM
+	        	        bool "Custom file"
+
+		endchoice
+
+		config BR2_CCTV_FIRMWARE_USER_CUSTOM_FILE
+			string "Custom user image"
+			depends on BR2_CCTV_FIRMWARE_USER_CUSTOM
+	
+	endif # !BR2_CCTV_FIRMWARE_LAYOUT_CUSTOM_CFG
+
+endif # BR2_CCTV_FIRMWARE

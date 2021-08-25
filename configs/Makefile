@@ -1,18 +1,26 @@
-MERGE_TOOL = $(abspath ../tools/merge_config_plus/merge_config_plus.sh)
+MERGE_TOOL = $(abspath ../vendors/merge_config_plus/merge_config_plus.sh)
 
+# Collect all ../board/*/*/*.br.config (excluding ../board/common/...) config entry points
 BOARDS = 	$(patsubst %.br.config,%_defconfig, \
 	  		$(subst /,_, \
 				$(patsubst ../board/%,%, \
-					$(wildcard ../board/*/*/*.br.config) \
+					$(patsubst ../board/common/%,, \
+						$(wildcard ../board/*/*/*.br.config) \
+					)\
 				) \
 			) \
 		)
 
 .SECONDEXPANSION: %_defconfig
 
-all: $(TOOLCHAINS) $(BOARDS)
+all: $(MERGE_TOOL) $(BOARDS)
 
-%_defconfig: $(MERGE_TOOL) $$(shell $(MERGE_TOOL) -b $(abspath .) --mode dependencies -f ../board/$$(subst _,/,%).br.config)
+$(MERGE_TOOL): ../vendors/merge_config_plus
+
+../vendors/merge_config_plus:
+	make -C ../vendors merge_config_plus
+
+%_defconfig: $$(shell $(MERGE_TOOL) -b $(abspath .) --mode dependencies -f ../board/$$(subst _,/,%).br.config)
 	@$(MERGE_TOOL) \
 		-b $(abspath .) \
 		-o $@ \

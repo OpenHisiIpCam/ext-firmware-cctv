@@ -1,9 +1,0 @@
-config BR2_PACKAGE_HOST_ESH
-        bool "host esh"
-	
-	default n
-
-	help
-		ESH – Embedded SHell.
-		Templating engine for evaluating shell commands embedded in arbitrary templates.
-		https://github.com/jirutka/esh

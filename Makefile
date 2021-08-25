@@ -2,32 +2,31 @@
 
 BR_EXTERNAL = $(abspath .)
 
-include Makefile.docs.include
-include Makefile.docker.include
-
 usage:
 	@echo "Usage:"
 	@echo "TODO"
 
-tools/buildroot:
-	make -C tools buildroot
+prepare: vendors/buildroot configs
+
+vendors/buildroot:
+	make -C vendors buildroot
 
 .PHONY: configs
 configs:
 	make -C configs
 
 .PHONY: list-defconfigs
-list-defconfigs: tools/buildroot configs
+list-defconfigs: vendors/buildroot configs
 	make \
-		-C $(abspath tools/buildroot) \
+		-C $(abspath vendors/buildroot) \
 	        BR2_EXTERNAL=$(BR_EXTERNAL) \
 	        list-defconfigs
 
 .PHONY: %_defconfig
-%_defconfig: tools/buildroot configs
+%_defconfig: vendors/buildroot configs
 	@test -f ./configs/$@ || (echo "Config $@ does not exist"; exit 1)
 	make \
-		-C $(abspath tools/buildroot) \
+		-C $(abspath vendors/buildroot) \
         	BR2_EXTERNAL=$(abspath $(BR_EXTERNAL)) \
         	O=$(abspath output/$(subst _defconfig,,$@)) \
         	$@
@@ -35,14 +34,11 @@ list-defconfigs: tools/buildroot configs
 TOOLCHAINS = $(patsubst configs/%,%,$(wildcard configs/*toolchain-*_defconfig))
 toolchains: $(TOOLCHAINS)
 
-GENERICS = $(patsubst configs/%,%,$(wildcard configs/generic_*_defconfig))
-generics: $(GENERICS)
-
 .PHONY: toolchain_%_defconfig
-$(TOOLCHAINS): %: tools/buildroot configs
+$(TOOLCHAINS): %: vendors/buildroot configs
 	@test -f ./configs/$@ || (echo "Config $@ does not exist"; exit 1)
 	make \
-		-C $(abspath tools/buildroot) \
+		-C $(abspath vendors/buildroot) \
 		BR2_EXTERNAL=$(abspath $(BR_EXTERNAL)) \
         	O=$(abspath output/$(subst _defconfig,,$@)) \
         	$@
@@ -53,14 +49,16 @@ $(TOOLCHAINS): %: tools/buildroot configs
 	rm -rf $(abspath output/$(subst _defconfig,,$@))
 
 # Run BR utils/check-package on all custom packages
-check-packages: tools/buildroot
-	tools/buildroot/utils/check-package -b $(BR_EXTERNAL)/package/camera/*
-	#TODO
+.IGNORE: check-packages
+check-packages: vendors/buildroot
+	vendors/buildroot/utils/check-package -b $(BR_EXTERNAL)/package/*/*
+	vendors/buildroot/utils/check-package -b $(BR_EXTERNAL)/package/*/*/*
 
 deb:
 	echo "TODO add deb apt-get dependencies"
 
 .PHONY: mrproper
 mrproper:
-	make -C tools clean
+	make -C vendors clean
+	make -C configs clean
 	rm -rf output

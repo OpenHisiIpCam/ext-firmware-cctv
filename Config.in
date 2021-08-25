@@ -6,7 +6,7 @@ config BR2_CCTV_BOARD_MODEL
 	string "Model name"
         default "model"
 
-source "$BR2_EXTERNAL_CCTV_PATH/board/Config.in"
+#source "$BR2_EXTERNAL_CCTV_PATH/board/Config.in"
 
 menuconfig BR2_CCTV_KERNEL_CONFIG
 	bool "Generate kernel config"
@@ -55,7 +55,7 @@ comment "***"
 
 menu "Host tools"
 	comment "Additional and newer version host tools"
-	source "$BR2_EXTERNAL_CCTV_PATH/package/esh/Config.in.host"
+#	source "$BR2_EXTERNAL_CCTV_PATH/package/esh/Config.in.host"
 #	source "$BR2_EXTERNAL_CCTV_PATH/package/genimage-custom/Config.in.host"
 endmenu
 

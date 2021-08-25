@@ -1,0 +1,41 @@
+%(define "arm_926")
+	## Arm 926t, eabi, softfp, thumb instructions
+	BR2_arm=y
+	BR2_ARM_INSTRUCTIONS_THUMB=y
+%(endef)
+
+%(define "arm_a53")
+	BR2_arm=y
+	BR2_cortex_a53=y
+	BR2_ARM_EABI=y
+	BR2_ARM_FPU_NEON_VFPV4=y
+	BR2_ARM_INSTRUCTIONS_THUMB2=y
+%(endef)
+
+%(define "arm_a5")
+	BR2_arm=y
+	BR2_cortex_a5=y
+	BR2_ARM_INSTRUCTIONS_THUMB2=y
+%(endef)
+
+%(define "arm_a7a17")
+	BR2_arm=y
+	BR2_cortex_a17_a7=y
+	BR2_ARM_EABI=y
+	BR2_ARM_FPU_NEON_VFPV4=y
+	BR2_ARM_INSTRUCTIONS_THUMB2=y
+%(endef)
+
+%(define "arm_a7")
+	BR2_arm=y
+	BR2_cortex_a7=y
+	BR2_ARM_EABI=y
+	BR2_ARM_FPU_NEON_VFPV4=y
+	BR2_ARM_INSTRUCTIONS_THUMB2=y
+%(endef)
+
+%(define "arm_a9")
+	BR2_arm=y
+	BR2_cortex_a9=y
+	BR2_ARM_INSTRUCTIONS_THUMB2=y
+%(endef)
