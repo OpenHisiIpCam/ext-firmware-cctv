@@ -5,6 +5,10 @@
 %(include "system.br.fragment")
 
 %(define "common_build_env")
+	BR2_DL_DIR="$(BR2_EXTERNAL_CCTV_PATH)/dl"
+%(endef)
+
+%(define "common_build_scripts")
 	# Post target build scripts
 	# package/system post build actions, should be always invoked
 	BR2_ROOTFS_POST_BUILD_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/system.sh"
