@@ -1,45 +1,120 @@
-## Toolchain
-## LOCAL_SYS_VENDOR 
-## LOCAL_SYS_KERNEL
-## Supported values
-##	* 3.0.8
+## Toolchain defines
 ##
+## Vars supposed to be setuped:
+## LOCAL_FAMILY example: hi3516cv100
+## LOCAL_KERNEL example: 3.0.8
+## LOCAL_LIBC	example: uclibc, glibc, musl
+##
+## Exported defines
+## toolchain_build - for toolchain/sdk build
+## toolchain - setup external toolchain
 
-##%(ifeq %(LOCAL_SYS_KERNEL),"")
-##	%(fail "LOCAL_SYS_KERNEL not set")
-##%(endif)
+## Simple check that used local vars are not empty
+%(define "toolchain_params_check")
+	%(ifeq %(LOCAL_FAMILY),"")
+		%(fail "toolchain_params_check expect LOCAL_FAMILY not null")
+	%(endif)
+	%(ifeq %(LOCAL_KERNEL),"")
+                %(fail "toolchain_params_check expect LOCAL_KERNEL not null")
+        %(endif)
+	%(ifeq %(LOCAL_LIBC),"")
+                %(fail "toolchain_params_check expect LOCAL_LIBC not null")
+        %(endif)
+%(endef)
 
-%(define "toolchain")
-	## Build all needed host util
+## Setup both BR vars about libc type  
+## Only needed will be used by BR (one in sdk build config, another for ordinary)
+%(define "toolchain_libc")
+	%(ifeq %(LOCAL_LIBC),"uclibc")
+		BR2_TOOLCHAIN_BUILDROOT_UCLIBC=y
+		BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC=y
+		LOCAL_TMP_LIBC_SDKNAME="uclibcgnueabi"
+	%(endif)
+	%(ifeq %(LOCAL_LIBC),"glibc")
+		BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+		BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
+		LOCAL_TMP_LIBC_SDKNAME="gnueabi"
+        %(endif)
+	%(ifeq %(LOCAL_LIBC),"musl")
+		BR2_TOOLCHAIN_BUILDROOT_MUSL=y
+		BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
+		LOCAL_TMP_LIBC_SDKNAME="musleabi"
+        %(endif)
+%(endef)
+
+## Setup proper BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_X_Y var 
+## according LOCAL_KERNEL var
+%(define "toolchain_kernel_headers")
+	%(ifeq %(major %(LOCAL_KERNEL)),"3")
+		%(ifeq %(minor %(LOCAL_KERNEL)),"0")
+			BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_0=y
+		%(endif)
+		%(ifeq %(minor %(LOCAL_KERNEL)),"10")
+                        BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_10=y
+                %(endif)
+		%(ifeq %(minor %(LOCAL_KERNEL)),"18")
+                        BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18=y
+                %(endif)
+	%(endif)
+	%(ifeq %(major %(LOCAL_KERNEL)),"4")
+                %(ifeq %(minor %(LOCAL_KERNEL)),"9")
+                        BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_9=y
+                %(endif)
+		%(ifeq %(minor %(LOCAL_KERNEL)),"19")
+                        BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19=y
+                %(endif)
+        %(endif)
+
+%(endef)
+
+%(define "toolchain_build")
+	%(call "toolchain_params_check")
+
+	## Force build all needed host util
 	BR2_FORCE_HOST_BUILD=y
 
 	BR2_RELRO_PARTIAL=y
-	#TODO BR2_TOOLCHAIN_BUILDROOT_VENDOR="hi3516cv100"
+	BR2_TOOLCHAIN_BUILDROOT_VENDOR=%(LOCAL_FAMILY)
+	
 	BR2_KERNEL_HEADERS_VERSION=y
-	#TODO BR2_DEFAULT_KERNEL_VERSION="3.0.8"
-	#TODO BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_0=y
+	BR2_DEFAULT_KERNEL_VERSION=%(LOCAL_KERNEL)
+	%(call "toolchain_kernel_headers")
+	
+	%(call "toolchain_libc")
+	
 	BR2_TOOLCHAIN_BUILDROOT_LOCALE=y
 	BR2_TOOLCHAIN_BUILDROOT_USE_SSP=y
 	BR2_GCC_VERSION_10_X=y
 	BR2_TOOLCHAIN_BUILDROOT_CXX=y
+
+	## Disable things that are not needed for sdk build
 	BR2_INIT_NONE=y
 	BR2_SYSTEM_BIN_SH_NONE=y
 	BR2_PACKAGE_BUSYBOX=n
 	BR2_PACKAGE_GDB=y
-	BR2_PACKAGE_URANDOM_SCRIPTS=y
+	##BR2_PACKAGE_URANDOM_SCRIPTS=y
 	BR2_TARGET_ROOTFS_TAR=n
 
 	BR2_PACKAGE_HOST_ENVIRONMENT_SETUP=y
 %(endef)
 
-%(define "embed_toolchain")
-	# Prebuilt toolchain
+## Setup prebuilt external toolchain
+%(define "toolchain")
+	%(call "toolchain_params_check")
+
 	BR2_RELRO_PARTIAL=y
 	BR2_TOOLCHAIN_EXTERNAL=y
 	BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
 	BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-	#TODO BR2_TOOLCHAIN_EXTERNAL_URL="file:///$(BR2_EXTERNAL_CCTV_PATH)/toolchain/arm-hi3516cv100-linux-uclibcgnueabi_sdk-buildroot.tar.gz"
-	#TODO BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_0=y
+
+	%(call "toolchain_kernel_headers")
+
+        %(call "toolchain_libc")
+	
+	## example file:///$(BR2_EXTERNAL_CCTV_PATH)/toolchain/arm-hi3516cv100-linux-uclibcgnueabi_sdk-buildroot.tar.gz"
+	BR2_TOOLCHAIN_EXTERNAL_URL="file:///$(BR2_EXTERNAL_CCTV_PATH)/toolchain/arm-".%(LOCAL_FAMILY)."-linux-".%(LOCAL_TMP_LIBC_SDKNAME)."_sdk-buildroot.tar.gz"
+	# TODO BR2_TOOLCHAIN_EXTERNAL_URL="$(shell $(BR2_EXTERNAL_CCTV_PATH)/scripts/toolchain.sh" 
+	
 	BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
 	BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG=n
 	BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y

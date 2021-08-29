@@ -1,0 +1,32 @@
+##
+## Vars supposed to be setuped
+## LOCAL_VENDOR
+## LOCAL_MODEL
+## 
+
+## Simple checks
+%(define "system_params_check")
+        %(ifeq %(LOCAL_VENDOR),"")
+                %(fail "LOCAL_VENDOR expected to be not null")
+        %(endif)
+
+        %(ifeq %(LOCAL_MODEL),"")
+                %(fail "LOCAL_MODEL expected to be not null")
+        %(endif)
+%(endef)
+
+%(define "system_env")
+        %(call "system_params_check")
+
+        # Common configration options TODO
+        BR2_TARGET_GENERIC_HOSTNAME=%(LOCAL_VENDOR)."_".%(LOCAL_MODEL)
+
+        # Custom busybox config file
+        BR2_PACKAGE_BUSYBOX_CONFIG="$(BR2_EXTERNAL_CCTV_PATH)/board/common/busybox/busybox.config"
+%(endef)
+
+%(define "system_squashfs_rootfs")
+	BR2_PACKAGE_HOST_SQUASHFS=y
+	# Generate gzipped rootfs squashfs
+        BR2_TARGET_ROOTFS_SQUASHFS=y
+%(endef)
