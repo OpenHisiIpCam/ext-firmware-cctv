@@ -1,10 +1,22 @@
 ## Setup for hi3516cv100 family 
+##
+## Hardware params
+##	ETHERNET
+##	USB 
+##	MMC (SDCARD)
+##	RAM
+##	ROM
+##
 
-LOCAL_VENDOR ?= "hisilicon"
-LOCAL_MODEL ?= "hi3516cv100"
 LOCAL_FAMILY="hi3516cv100"
 LOCAL_KERNEL="3.0.8"
 LOCAL_LIBC="uclibc"
+
+LOCAL_SDK="1.0.b.0"
+
+LOCAL_CHIP ?= "hi3516cv100"
+LOCAL_VENDOR ?= "hisilicon"
+LOCAL_MODEL ?= %(LOCAL_CHIP)
 
 %(include "../../common/common.br.fragment")
 
@@ -15,7 +27,10 @@ LOCAL_LIBC="uclibc"
 	##BR2_TARGET_OPTIMIZATION="-mcpu=arm926ej-s -mno-unaligned-access -fno-aggressive-loop-optimizations"
 
 	## Patches for kernel and uboot
-	BR2_GLOBAL_PATCH_DIR="$(BR2_EXTERNAL_CCTV_PATH)/board/hisilicon/hi3516cv100/patches"
+	BR2_GLOBAL_PATCH_DIR="$(BR2_EXTERNAL_CCTV_PATH)/board/hisilicon/hi3516cv100/sdk-".%(LOCAL_SDK)."/patches"
+
+	# Setup hi-sdk package
+	# TODO
 %(endef)
 
 ## Build kernel
@@ -24,8 +39,10 @@ LOCAL_LIBC="uclibc"
 	BR2_LINUX_KERNEL_CUSTOM_VERSION=y
 	BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=%(LOCAL_KERNEL)
 	BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
-	# TODO
-	BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_CCTV_PATH)/board/common/linux/hi3516cv100/hi3516cv100.generic.config"
+	LOCAL_KERNEL_CONFIG=%(save %(LOCAL_GENERATED)."/generated/".%(LOCAL_MODEL).".kernel.config", %(process %(file "common.kernel.fragment")))
+	##%(comment "LOCAL_KERNEL_CONFIG=", %(LOCAL_KERNEL_CONFIG))
+	%(comment "LOCAL_BASE=", %(LOCAL_BASE))
+	BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_CCTV_PATH)/".%(relpath %(LOCAL_KERNEL_CONFIG), %(LOCAL_BASE))
 	BR2_LINUX_KERNEL_UIMAGE=y
 %(endef)
 

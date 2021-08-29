@@ -1,0 +1,31 @@
+##
+##
+## CONFIG_HIETH_MII_RMII_MODE_U=1
+## CONFIG_HIETH_MII_RMII_MODE_D=1
+## CONFIG_HIETH_PHYID_U=1
+## CONFIG_HIETH_PHYID_D=2
+
+LOCAL_PHY_CON ?= "rmii"
+LOCAL_PHY_U ?= 1
+LOCAL_PHY_D ?= 2
+LOCAL_USB ?= n
+LOCAL_MMC ?= n
+
+%(include "linux/hi3516cv100.generic.config")
+
+# Rewrite ethernet related options
+%(ifeq %(LOCAL_PHY_CON), "rmii")
+	CONFIG_HIETH_MII_RMII_MODE_U=1
+	CONFIG_HIETH_MII_RMII_MODE_D=1
+%(endif)
+
+CONFIG_HIETH_PHYID_U=%(LOCAL_PHY_U)
+CONFIG_HIETH_PHYID_D=%(LOCAL_PHY_D)
+
+%(ifeq %(LOCAL_USB),"y")
+	# TODO add usb options
+%(endif)
+
+%(ifeq %(LOCAL_MMC),"y")
+	# TODO add mmc options
+%(endif)

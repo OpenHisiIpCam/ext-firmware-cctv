@@ -26,7 +26,7 @@ $(MERGE_TOOL): ../vendors/merge_config_plus
 
 %_defconfig: $(MERGE_TOOL) $(MERGE_TOOL_UPDATED) $$(shell $(MERGE_TOOL) -b $(abspath .) --mode dependencies -f ../board/$$(subst _,/,%).br.config)
 	@$(MERGE_TOOL) \
-		-b $(abspath .) \
+		-b $(abspath ..) \
 		-o $@ \
 		--strip-history \
 		-f ../board/$(subst /defconfig,.br.config,$(subst _,/,$@))
