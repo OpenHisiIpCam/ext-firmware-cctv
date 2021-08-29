@@ -1,0 +1,39 @@
+## Setup for hi3516cv100 family 
+
+LOCAL_VENDOR ?= "hisilicon"
+LOCAL_MODEL ?= "hi3516cv100"
+LOCAL_FAMILY="hi3516cv100"
+LOCAL_KERNEL="3.0.8"
+LOCAL_LIBC="uclibc"
+
+%(include "../../common/common.br.fragment")
+
+%(define "hi3516cv100_env")
+	%(call "arm_926")
+
+	## TODO
+	##BR2_TARGET_OPTIMIZATION="-mcpu=arm926ej-s -mno-unaligned-access -fno-aggressive-loop-optimizations"
+
+	## Patches for kernel and uboot
+	BR2_GLOBAL_PATCH_DIR="$(BR2_EXTERNAL_CCTV_PATH)/board/hisilicon/hi3516cv100/patches"
+%(endef)
+
+## Build kernel
+%(define "hi3516cv100_kernel")
+	BR2_LINUX_KERNEL=y
+	BR2_LINUX_KERNEL_CUSTOM_VERSION=y
+	BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=%(LOCAL_KERNEL)
+	BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+	# TODO
+	BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_CCTV_PATH)/board/common/linux/hi3516cv100/hi3516cv100.generic.config"
+	BR2_LINUX_KERNEL_UIMAGE=y
+%(endef)
+
+## Build U-Boot
+%(define "hi3516cv100_uboot")
+	BR2_TARGET_UBOOT=y
+	BR2_TARGET_UBOOT_BOARDNAME="hi3516c"
+	BR2_TARGET_UBOOT_CUSTOM_VERSION=y
+	BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE="2010.06"
+	BR2_TARGET_UBOOT_CUSTOM_MAKEOPTS="PLATFORM_RELFLAGS='-std=gnu90'"
+%(endef)

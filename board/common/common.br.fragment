@@ -1,27 +1,22 @@
-%(include "./arch.br.fragment")
-%(include "./toolchain.br.fragment")
+## TODO
 
-# Common configration options
+%(include "arch.br.fragment")
+%(include "toolchain.br.fragment")
+%(include "system.br.fragment")
 
-BR2_TARGET_GENERIC_HOSTNAME="$(BR2_CCTV_BOARD_VENDOR)_$(BR2_CCTV_BOARD_MODEL)"
+%(define "common_build_env")
+	# Post target build scripts
+	# package/system post build actions, should be always invoked
+	BR2_ROOTFS_POST_BUILD_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/system.sh"
 
-# Custom busybox config file
-BR2_PACKAGE_BUSYBOX_CONFIG="$(BR2_EXTERNAL_CCTV_PATH)/board/common/busybox/busybox.config"
+	# Post image build scripts
+	# package/genimage-custom post build actions, should be always invoked
+	BR2_ROOTFS_POST_IMAGE_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/genimage.sh"
+	# package/swupdate-custom post build actions, should be always invoked
+	BR2_ROOTFS_POST_IMAGE_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/swupdate.sh"
+%(endef)
 
-# Generate gzipped rootfs squashfs
-BR2_TARGET_ROOTFS_SQUASHFS=y
-
-# Post target build scripts
-# package/system post build actions, should be always invoked
-BR2_ROOTFS_POST_BUILD_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/system.sh"
-
-# Post image build scripts
-# package/genimage-custom post build actions, should be always invoked
-BR2_ROOTFS_POST_IMAGE_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/genimage.sh"
-# package/swupdate-custom post build actions, should be always invoked
-BR2_ROOTFS_POST_IMAGE_SCRIPT += " $(BR2_EXTERNAL_CCTV_PATH)/scripts/swupdate.sh"
-
-%(define "host_utils")
+%(define "common_host_utils")
 	BR2_PACKAGE_HOST_CMAKE=y
 	BR2_PACKAGE_HOST_GENIMAGE=y
 	BR2_PACKAGE_HOST_JQ=y

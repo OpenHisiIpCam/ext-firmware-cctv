@@ -1,5 +1,6 @@
+## Common atchitecures 
+
 %(define "arm_926")
-	## Arm 926t, eabi, softfp, thumb instructions
 	BR2_arm=y
 	BR2_ARM_INSTRUCTIONS_THUMB=y
 %(endef)
