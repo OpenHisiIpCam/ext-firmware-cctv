@@ -1,5 +1,12 @@
 include $(sort $(wildcard $(BR2_EXTERNAL_CCTV_PATH)/package/*/*.mk))
 
+# print toolchain name
+# needed for prebuilt apply
+# assumed to run on configured instance
+print-gnu-target-name:
+	@echo $(GNU_TARGET_NAME)
+
+
 # moved to package/hisilicon
 #include $(BR2_EXTERNAL_CCTV_PATH)/board/bsp.mk
 
