@@ -1,5 +1,7 @@
 # TODO description
 
+include Makefile.versions.include
+
 BR_EXTERNAL = $(abspath .)
 
 usage:
@@ -7,6 +9,9 @@ usage:
 	@echo "TODO"
 
 prepare: vendors/buildroot configs
+
+prebuilt:
+	make -C prebuilt
 
 vendors/buildroot:
 	make -C vendors buildroot
@@ -30,6 +35,7 @@ list-defconfigs: vendors/buildroot configs
         	BR2_EXTERNAL=$(abspath $(BR_EXTERNAL)) \
         	O=$(abspath output/$(subst _defconfig,,$@)) \
         	$@
+	if [ -d prebuilt/$(BUILDROOT_VERSION) ]; then ./prebuilt/apply.sh prebuilt/$(BUILDROOT_VERSION) $(abspath output/$(subst _defconfig,,$@)); fi
 
 TOOLCHAINS = $(patsubst configs/%,%,$(wildcard configs/*toolchain-*_defconfig))
 toolchains: $(TOOLCHAINS)
@@ -42,6 +48,7 @@ $(TOOLCHAINS): %: vendors/buildroot configs
 		BR2_EXTERNAL=$(abspath $(BR_EXTERNAL)) \
         	O=$(abspath output/$(subst _defconfig,,$@)) \
         	$@
+	if [ -d prebuilt/$(BUILDROOT_VERSION) ]; then ./prebuilt/apply.sh prebuilt/$(BUILDROOT_VERSION) $(abspath output/$(subst _defconfig,,$@)); fi
 	make \
 		-C $(abspath output/$(subst _defconfig,,$@)) \
 		sdk
@@ -61,4 +68,6 @@ deb:
 mrproper:
 	make -C vendors clean
 	make -C configs clean
+	make -C prebuilt clean
 	rm -rf output
+	rm -rf dl

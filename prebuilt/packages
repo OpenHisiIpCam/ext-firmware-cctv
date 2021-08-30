@@ -1,0 +1,31 @@
+PACKAGES="host-acl \
+          host-attr \
+          host-autoconf \
+          host-automake \
+          host-fakeroot \
+          host-libtool \
+          host-makedevs \
+          host-kmod \
+          host-m4 \
+          host-patchelf \
+          host-pkgconf \
+          host-uboot-tools \
+          host-gmp \
+          host-mpc \
+          host-mpfr \
+          host-tar \
+          host-xz \
+          host-cmake \
+          host-cramfs \
+          host-e2fsprogs \
+          host-f2fs-tools \
+          host-genromfs \
+          host-libzlib \
+          host-lz4 \
+          host-lzo \
+          host-mtd \
+          host-squashfs \
+          host-util-linux \
+          host-zlib \
+          host-zstd \
+          host-skeleton"

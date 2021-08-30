@@ -29,4 +29,4 @@ $(MERGE_TOOL): ../vendors/merge_config_plus
 
 .PHONY: clean
 clean:
-	rm -f *_defconfig
+	rm -f $(shell find . -name "*_defconfig" ! -name "prebuilt_defconfig")

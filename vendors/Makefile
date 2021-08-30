@@ -1,5 +1,4 @@
-BUILDROOT_VERSION=2021.02.3
-MCP_VERSION=2.0.1
+include ../Makefile.versions.include
 
 all: buildroot merge_config_plus
 
