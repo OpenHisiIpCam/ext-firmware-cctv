@@ -1,5 +1,10 @@
 # SigmaStar infinity6b0 family
 
+<!---
+family:
+  name: infinity6b0
+--->
+
 ## SoCs
 
 |Chip   |Comments|

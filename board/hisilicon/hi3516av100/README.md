@@ -1,5 +1,10 @@
 # HiSilicon hi3516av100 family
 
+<!---
+family:
+  name: hi3516av100
+--->
+
 * Cortex-A7
 
 ## SoCs

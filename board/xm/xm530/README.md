@@ -1,5 +1,13 @@
 # XiongMai XM530 family
 
+<!---
+family:
+  name: xm550
+  soc:
+    - xm550
+    - xm530
+--->
+
 * ???
 
 ## SoCs
